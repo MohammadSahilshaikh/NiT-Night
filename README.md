@@ -1,0 +1,2 @@
+# NiT Night V3
+See DEPLOY-V3.md first. V3 extends the V2 local study platform and preserves its original archive. It adds optional Supabase cloud integration, server-side sample exam lock, admin content manager, AI tutor/evaluation route, official CSE semester roster and topic-based practice prompts. External services have not been configured or deployed. Missing syllabi and papers are explicitly identified. Do not publish the supplied PDFs without authorization.

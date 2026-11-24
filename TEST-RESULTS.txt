@@ -1,0 +1,5 @@
+Static JS parsing: run node --check on app.js, cloud.js, data.js, archive-data.js and API files.
+Browser launch worked, but navigation to local HTTP, file:// and intercepted test origin was blocked by administrator (net::ERR_BLOCKED_BY_ADMINISTRATOR). No browser interaction passed or failed because navigation never completed.
+Live Supabase, RLS, Vercel and OpenAI: not configured or tested.
+
+Data: 4 departments; CSE 6 theory + 6 labs; all six theory topic outlines nonempty; C sample scoring key matches SQL. All 42 bundled PDF headers valid. JS syntax checks passed.
