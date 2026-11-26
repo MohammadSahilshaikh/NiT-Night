@@ -40,6 +40,7 @@ function testPage(code){
   let allSubj=(window.subjectiveBanks&&window.subjectiveBanks[s.code])||[];
   let currentSubj=getSubjectiveBank(s,testMarksFilter,testYearFilter);
   let availableYears=[...new Set([...allBank.map(q=>q.year),...allSubj.map(q=>q.year)].filter(Boolean))].sort((a,b)=>b-a);
+  let availableMarks=[...new Set(allSubj.map(q=>q.marks))].sort((a,b)=>a-b);
   let deptMCQs=ss.reduce((acc,a)=>acc+getSubjectBank(a,'all').length,0);
   let deptSubj=ss.reduce((acc,a)=>acc+getSubjectiveBank(a,'all','all').length,0);
   let result=state.results[sk(s)];
@@ -48,7 +49,7 @@ function testPage(code){
   
   html+=`<div class="tabs" style="margin-bottom:20px">
     <button class="${testTab==='mcq'?'active':''}" data-act="setTestTab" data-id="mcq">🔘 Objective MCQs (1 Mark · ${allBank.length} Qs)</button>
-    <button class="${testTab==='subjective'?'active':''}" data-act="setTestTab" data-id="subjective">📝 Subjective & Theory (5M / 10M / 15M · ${allSubj.length} Qs)</button>
+    <button class="${testTab==='subjective'?'active':''}" data-act="setTestTab" data-id="subjective">📝 Subjective & Theory (Marks-wise · ${allSubj.length} Qs)</button>
   </div>`;
 
   if(testTab==='subjective'){
@@ -58,9 +59,7 @@ function testPage(code){
       </select>
       <select id="testMarksFilter" aria-label="Filter by marks" style="width:auto;min-width:160px">
         <option value="all" ${testMarksFilter==='all'?'selected':''}>All Marks (${allSubj.length} Qs)</option>
-        <option value="5" ${testMarksFilter==='5'?'selected':''}>5 Marks (${allSubj.filter(x=>x.marks===5).length} Qs)</option>
-        <option value="10" ${testMarksFilter==='10'?'selected':''}>10 Marks (${allSubj.filter(x=>x.marks===10).length} Qs)</option>
-        <option value="15" ${testMarksFilter==='15'?'selected':''}>15 Marks (${allSubj.filter(x=>x.marks===15).length} Qs)</option>
+        ${availableMarks.map(m=>`<option value="${m}" ${String(testMarksFilter)===String(m)?'selected':''}>${m} Marks (${allSubj.filter(x=>x.marks===m).length} Qs)</option>`).join('')}
       </select>
       <select id="testYearFilter" aria-label="Filter by exam year" style="width:auto;min-width:160px">
         <option value="all" ${testYearFilter==='all'?'selected':''}>All Years</option>
@@ -163,9 +162,7 @@ function notes(){
     </select>
     <select id="studioMarks" aria-label="Filter by marks" style="min-width:140px">
       <option value="all" ${studioMarks==='all'?'selected':''}>All Marks (${allSubjQs.length})</option>
-      <option value="5" ${studioMarks==='5'?'selected':''}>5 Marks (${allSubjQs.filter(x=>x.marks===5).length})</option>
-      <option value="10" ${studioMarks==='10'?'selected':''}>10 Marks (${allSubjQs.filter(x=>x.marks===10).length})</option>
-      <option value="15" ${studioMarks==='15'?'selected':''}>15 Marks (${allSubjQs.filter(x=>x.marks===15).length})</option>
+      ${[...new Set(allSubjQs.map(q=>q.marks))].sort((a,b)=>a-b).map(m=>`<option value="${m}" ${String(studioMarks)===String(m)?'selected':''}>${m} Marks (${allSubjQs.filter(x=>x.marks===m).length})</option>`).join('')}
     </select>
     <select id="prompt" aria-label="Select question" style="flex:1;min-width:260px">
       ${filteredQs.map((item, idx)=>`<option value="${idx}" ${idx===studioQ?'selected':''}>[${item.marks}M · ${item.year}] ${esc(item.topic)}: ${esc(item.q.slice(0, 65))}...</option>`).join('')}
